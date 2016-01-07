@@ -1,9 +1,8 @@
-/*
+package helloWorld;/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package javaforhumans;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,14 +10,16 @@ import java.util.Scanner;
 
 /**
  *
- * @author lwdthe1
+ * @author Lincoln W Daniel
  */
 public class HelloWorld {
 
     /**
      * This main method is the method that runs the application.
      * It is the first thing called by the system when our application starts.
-     * It will run the rest of our code. I will explain more later
+     * It will run the rest of our code. I will explain more later.
+     * For now, just look at it and see if you can make out what's happening here.
+     * Run and play around with it. Change some things, break some things. You'll learn how to fix them later :)
      * @param args
      */
     public static void main(String[] args) {
@@ -69,7 +70,7 @@ public class HelloWorld {
             System.out.println("which month did you start programming?");
             monthStartedProgramming = scanner.nextLine();
             
-            //create an instance of a ModernNerd with the firstName, middleName, and lastName the user provided.
+            //create an instance of a helloWorld.ModernNerd with the firstName, middleName, and lastName the user provided.
             ModernNerd modernNerd = new ModernNerd(firstName, middleName, 
                     lastName);
             //call method to set the user's favorite language to what they entered
@@ -77,7 +78,7 @@ public class HelloWorld {
             modernNerd.setMonthStartedCoding(monthStartedProgramming);
             modernNerd.setYearStartedCoding(yearStartedProgramming);
             
-            //call the ModernNerd object's greet method 
+            //call the helloWorld.ModernNerd object's greet method
             //so it can say hi and tell us about itself
             modernNerd.greet();
             System.out.println("Enter Y to begin or N to stop.");
