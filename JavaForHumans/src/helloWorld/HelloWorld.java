@@ -85,6 +85,7 @@ public class HelloWorld {
         }
     }
 
+    Object object = new Object();
 }
 
 abstract class Human {
