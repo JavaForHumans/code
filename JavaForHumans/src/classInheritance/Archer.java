@@ -11,7 +11,7 @@ public class Archer extends Human {
         findArrows();
     }
 
-    private void findArrows() {
+    public void findArrows() {
         System.out.println("Looking for arrows");
     }
 }
