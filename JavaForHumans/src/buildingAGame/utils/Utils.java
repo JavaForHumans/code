@@ -17,9 +17,9 @@ public class Utils {
 
     public static Random getSharedRandomGen() { return sharedRandomNumberGenerator; }
 
-    public static String printSystemMessage(String message) {
+    public static String gameConsoleMessage(String message, boolean logToSystemConsole) {
         String returnMessage = SYSTEM_MESSAGE_PREFIX + ": " + message + "\n";
-        System.out.println(returnMessage);
+        if(logToSystemConsole){ System.out.println(returnMessage); }
 
         return  returnMessage;
     }

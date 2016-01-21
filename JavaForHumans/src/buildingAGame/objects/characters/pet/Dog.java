@@ -9,21 +9,26 @@ import buildingAGame.objects.characters.human.Human;
  */
 public class Dog extends Pet implements buildingAGame.objects.characters.Character {
 
+    private int maxTrainingCapability;
+
     public Dog(String name, Human owner) {
         super(name, owner);
         bark();
     }
 
     public void bark() {
-        speak("Wolf Wolf!");
+        speak("Wolf Wolf!", true);
     }
 
     @Override
     public void attack(Character opponent) {
         if(!isSelf(opponent) && isAlive()) {
-            speak("Biting " + opponent.getName());
+            speak("Biting " + opponent.getName(), true);
             if(opponent.doDamageToHealth(attackPower, experienceLevel)){
+                speak("Successful Attack of " + attackPower, true);
                 gainExperience(ACTION_LANDED_ATTACK);
+            }  else {
+                speak("Failed Attack of " + attackPower, true);
             }
         }
         train();
@@ -31,9 +36,10 @@ public class Dog extends Pet implements buildingAGame.objects.characters.Charact
 
     @Override
     public void train() {
-        int trainedAmount = randomGenerator.nextInt(5);
+        int trainedAmount = randomGenerator.nextInt(getMaxTrainingCapability());
         attackPower += trainedAmount;
-        if(trainedAmount > 0) {
+        if (trainedAmount > 0) {
+            speak("Trained. Added " + trainedAmount + " attack power.", true);
             gainExperience(ACTION_TRAINED);
         }
     }

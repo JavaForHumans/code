@@ -11,19 +11,22 @@ public class Warrior extends Human {
 
     public Warrior(String name) {
         super(name);
-        System.out.println(name + ": Ready for battle!");
+        speak(name + ": Ready for battle!", false);
     }
 
     @Override
     public void attack(Character opponent) {
         if(!isSelf(opponent) && isAlive()) {
-            System.out.println("Attacking " + opponent.getName() + " with my sword!");
+            speak("Attacking " + opponent.getName() + " with my sword!", true);
 
             //try to do damage to the opponent's health
             if(opponent.doDamageToHealth(attackPower, experienceLevel)){
                 //if attack was successful and damage was done to opponent's health
+                speak("Successful Attack of " + attackPower, true);
                 //gain experience for it
                 gainExperience(ACTION_LANDED_ATTACK);
+            }  else {
+                speak("Failed Attack of " + attackPower, true);
             }
         }
         train();
@@ -35,13 +38,22 @@ public class Warrior extends Human {
     }
 
     @Override
-    public void train() {
-        int trainedAmount = randomGenerator.nextInt(10);
-        attackPower += trainedAmount;
-        if(trainedAmount > 0) {
-            gainExperience(ACTION_TRAINED);
-        }
+    protected void afterLevelUpgrade() {
+
     }
 
-
+    /**
+     * Allows this character to try to train its attack power.
+     */
+    @Override
+    public void train() {
+        int trainedAmount = randomGenerator.nextInt(getMaxTrainingCapability());
+        attackPower += trainedAmount;
+        if(trainedAmount > 0) {
+            speak("Trained. Added " + trainedAmount + " attack power.", true);
+            gainExperience(ACTION_TRAINED);
+        } else {
+            speak("Training failed ...", true);
+        }
+    }
 }

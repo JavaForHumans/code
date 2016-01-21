@@ -14,15 +14,18 @@ public class Lion extends Pet implements buildingAGame.objects.characters.Charac
     }
 
     public void roar() {
-        speak("Meow Meow Meow!");
+        speak("Meow Meow Meow!", true);
     }
 
     @Override
     public void attack(Character opponent) {
         if(!isSelf(opponent) && isAlive()) {
-            speak("Scratching " + opponent.getName());
+            speak("Scratching " + opponent.getName(), true);
             if(opponent.doDamageToHealth(attackPower, experienceLevel)){
-                gainExperience(AbstractCharacter.ACTION_LANDED_ATTACK);
+                speak("Successful Attack of " + attackPower , true);
+                gainExperience(ACTION_LANDED_ATTACK);
+            }  else {
+                speak("Failed Attack of " + attackPower, true);
             }
         }
 
@@ -31,9 +34,10 @@ public class Lion extends Pet implements buildingAGame.objects.characters.Charac
 
     @Override
     public void train() {
-        int trainedAmount = randomGenerator.nextInt(5);
+        int trainedAmount = randomGenerator.nextInt(getMaxTrainingCapability());
         attackPower += trainedAmount;
         if(trainedAmount > 0) {
+            speak("Trained. Added " + trainedAmount + " attack power.", true);
             gainExperience(ACTION_TRAINED);
         }
     }
@@ -42,4 +46,6 @@ public class Lion extends Pet implements buildingAGame.objects.characters.Charac
     protected void cry() {
         roar();
     }
+
+
 }

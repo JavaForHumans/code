@@ -1,13 +1,21 @@
 package buildingAGame.objects.characters.human;
 
 import buildingAGame.objects.characters.Character;
+import buildingAGame.utils.Utils;
+
 /**
  * Created by lwdthe1 on 1/17/2016.
  */
 public class FireArcher extends Archer {
-    int firePower = 5;
+    int firePower;
     public FireArcher(String name) {
         super(name);
+        /*
+        fire archers start off with less maxAttackArrows than regular archers
+        because fire archers get more power from their fire
+         */
+        maxAttackArrows = 20;
+        firePower = Utils.getSharedRandomGen().nextInt(50) + 40;
     }
 
     /**
@@ -19,14 +27,10 @@ public class FireArcher extends Archer {
     public void attack(Character opponent) {
         if(!isSelf(opponent) && isAlive()) {
             if(numArrows > 0) {
-                int numArrowsToAttackWith = randomGenerator.nextInt(numArrows) + 1;
-
-                //the maximum arrows an archer can attack with at once is 10
-                //make sure the numArrowsToAttackWith does not exceed 10
-                numArrowsToAttackWith = Math.min(numArrowsToAttackWith, 10);
+                int numArrowsToAttackWith = getNumArrowsToAttackWith();
 
                 speak(" Attacking " + opponent.getName()
-                        + " with " + numArrowsToAttackWith + " fire arrows!");
+                        + " with " + numArrowsToAttackWith + " fire arrows!", true);
 
                 //subtract the number of arrows you're using for this attack
                 // from the number of arrows you have
@@ -35,8 +39,9 @@ public class FireArcher extends Archer {
                 //calculate the attack power of this arrow with the number of arrows it will attack with
                 int attackPowerWithArrows = calculateAttackPowerWithArrows(numArrowsToAttackWith);
                 //try to do damage to the opponent's health
-                if(opponent.doDamageToHealth(attackPowerWithArrows + firePower, experienceLevel)){
+                if(opponent.doDamageToHealth(attackPowerWithArrows, experienceLevel)){
                     //if attack was successful and damage was done to opponent's health
+                    speak("Successful Attack of " + attackPowerWithArrows, true);
                     //gain experience for it
                     gainExperience(ACTION_LANDED_ATTACK);
                 }
@@ -44,11 +49,19 @@ public class FireArcher extends Archer {
                 //find more arrows to replace the arrows you just used
                 findArrows();
             } else {
-                speak("No arrows. Can't attack " + opponent.getName() + " ...");
+                speak("No arrows. Can't attack " + opponent.getName() + " ...", true);
                 //find more arrows for next attack
                 findArrows();
             }
         }
         train();
+    }
+
+    @Override
+    public int calculateAttackPowerWithArrows(int numArrowsToAttackWith) {
+        if(numArrowsToAttackWith == -1) {
+            numArrowsToAttackWith = Math.min(numArrows, maxAttackArrows);
+        }
+        return attackPower + firePower + numArrowsToAttackWith;
     }
 }

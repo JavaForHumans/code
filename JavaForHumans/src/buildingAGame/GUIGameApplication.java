@@ -8,8 +8,7 @@ package buildingAGame;
 //Imports are listed in full to show what's being used
 // could just import javafx.*
 
-import buildingAGame.objects.game.ConsoleGame;
-import buildingAGame.objects.game.GUIGame;
+import buildingAGame.objects.game.Game;
 import buildingAGame.objects.game.GameGUI;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -33,7 +32,8 @@ public class GUIGameApplication extends Application {
     public void start(Stage primaryStage) {
         GameGUI gameGUI = new GameGUI("ModernNerd Battles", primaryStage);
 
-        GUIGame guiGame = new GUIGame(null, gameGUI);
+
+        Game guiGame = new Game(null, gameGUI);
         gameGUI.setup();
         guiGame.start();
     }

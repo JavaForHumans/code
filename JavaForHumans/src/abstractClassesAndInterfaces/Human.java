@@ -59,4 +59,8 @@ public abstract class Human implements Character{
         System.out.println(name + ": I've been hit. My health now = " + health);
         return health;
     }
+
+    public boolean hasPet() {
+        return pet != null;
+    }
 }

@@ -1,24 +1,18 @@
 package buildingAGame.objects.game;
 
 import buildingAGame.objects.characters.Character;
+import buildingAGame.utils.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
-
-import java.awt.*;
 
 /**
  * Created by lwdthe1 on 1/20/2016.
@@ -26,24 +20,30 @@ import java.awt.*;
 public class GameGUI {
     private final Stage gamePrimaryStage;
     private final String name;
-    private GUIGame game;
+    private Game game;
     private TitledPane defenderPane;
     private TitledPane attackerPane;
     private BorderPane rootLayout;
     private ListView playersListView;
-    private Button resetGameButton;
+    private Button nextBattleButton;
     private Label winnerLabel;
-    private TextArea winnerTextArea;
+    private TextArea gameConsoleTextArea;
     private TextArea attackerTextArea;
     private TextArea defenderTextArea;
+    private Button next40BattlesButton;
+    private Button resetGameButton;
 
     public GameGUI(String name, Stage primaryStage) {
         this.name = name;
         this.gamePrimaryStage = primaryStage;
     }
 
-    public void setGUIGame(GUIGame game) {
+    public void setGUIGame(Game game) {
         this.game = game;
+    }
+
+    public ListView getPlayersListView() {
+        return playersListView;
     }
 
     public boolean setup(){
@@ -59,15 +59,14 @@ public class GameGUI {
 
         playersListView = setUpPlayersLeaderBoard();
 
-
-        BorderPane battlePane = new BorderPane();
+        BorderPane currentBattlePane = new BorderPane();
         attackerPane = new TitledPane();
         defenderPane = new TitledPane();
         attackerPane.setText("Attacker Zone");
         defenderPane.setText("Defender Zone");
 
         attackerTextArea = new TextArea("Attacker Area");
-        defenderTextArea = new TextArea("Attacker Area");
+        defenderTextArea = new TextArea("Defender Area");
         attackerTextArea.setWrapText(true);
         defenderTextArea.setWrapText(true);
 
@@ -80,69 +79,114 @@ public class GameGUI {
         defenderPane.autosize();
         attackerPane.setCollapsible(false);
         defenderPane.setCollapsible(false);
-        battlePane.setTop(attackerPane);
-        battlePane.setBottom(defenderPane);
+        currentBattlePane.setTop(attackerPane);
+        currentBattlePane.setBottom(defenderPane);
 
-        TitledPane rightPane = new TitledPane("Current Battle", battlePane);
+        TitledPane rightPane = new TitledPane("Current Battle", currentBattlePane);
         rightPane.setCollapsible(false);
 
-        //The button uses an inner class to handle the button click event
-        resetGameButton = new Button("Next Battle");
+        TitledPane bottomPane = new TitledPane("Control Station", currentBattlePane);
+        bottomPane.setCollapsible(false);
+        BorderPane controlStationContainer = new BorderPane();
 
-        resetGameButton.setOnAction(event -> {
+        //The button uses an inner class to handle the button click event
+        nextBattleButton = new Button("Next Battle");
+        nextBattleButton.setDisable(true);
+        nextBattleButton.setOnAction(event -> {
             game.nextBattle();
         });
 
+        next40BattlesButton = new Button("Next 40 Battles");
+        next40BattlesButton.setDisable(true);
+        next40BattlesButton.setOnAction(event -> {
+            if (game.getNumCharactersLeft() > 1) {
+                next40BattlesButton.setDisable(true);
+
+                //loop from 1 to and including 40
+                for (int i = 1; i <= 40; i++) {
+                    //this will run the next battle and return the result
+                    //if there are no more turns or characters left, it will return false
+                    if (!game.nextBattle()) {
+                        Utils.gameConsoleMessage("Game Over!", true);
+                        //there are no more battles left
+                        break;
+                    }
+                }
+
+                next40BattlesButton.setDisable(false);
+            }
+        });
+
+        resetGameButton = new Button("Reset Game");
+        resetGameButton.setDisable(true);
+        resetGameButton.setOnAction(event -> {
+            game.restart(null);
+            playersListView.setItems(FXCollections.observableArrayList(game.getPlayers()));
+            updateLeadersBoard();
+        });
+
+        controlStationContainer.setLeft(resetGameButton);
+        controlStationContainer.setRight(nextBattleButton);
+        controlStationContainer.setCenter(next40BattlesButton);
+        bottomPane.setContent(controlStationContainer);
+
         rootLayout.setRight(rightPane);
-        rootLayout.setBottom(resetGameButton);
+        rootLayout.setBottom(bottomPane);
         //Add the BorderPane to the Scene
-        Scene appScene = new Scene(rootLayout, 1200, 800);
+        Scene appScene = new Scene(rootLayout, 1400, 900);
         //Add the Scene to the Stage
         gamePrimaryStage.setScene(appScene);
         gamePrimaryStage.show();
         return true;
     }
 
-    public TextArea getWinnerTextArea() {
-        return winnerTextArea;
+    public TextArea getGameConsole() {
+        return gameConsoleTextArea;
     }
 
     private ListView setUpPlayersLeaderBoard() {
-        final TitledPane titledPane = new TitledPane();
-        titledPane.setText("Players Leader Board");
+        final TitledPane playersLeaderBoardContainer = new TitledPane();
+        playersLeaderBoardContainer.setText("Players Leader Board");
+        final FlowPane playersLeaderBoardFlowPane = new FlowPane();
+        playersLeaderBoardFlowPane.setHgap(500);
+        playersLeaderBoardFlowPane.setVgap(10);
+        playersLeaderBoardFlowPane.autosize();
 
-        final FlowPane listFlowPane = new FlowPane();
-        listFlowPane.setHgap(500);
-        listFlowPane.setVgap(10);
-        ListView playersList = new ListView(FXCollections.observableArrayList(game.getPlayers()));
+        ListView playersListView = new ListView(FXCollections.observableArrayList(game.getPlayers()));
+        playersListView.setMinWidth(600);
 
-        winnerTextArea = new TextArea();
-        winnerTextArea.setMaxSize(600, 100);
-        winnerTextArea.setWrapText(true);
-        winnerTextArea.setEditable(false);
+        TitledPane gameConsoleContainer = setUpGameConsole();
 
-        listFlowPane.getChildren().add(playersList);
-        listFlowPane.getChildren().add(new Label("Winner"));
-        listFlowPane.getChildren().add(winnerTextArea);
+        playersLeaderBoardFlowPane.getChildren().add(playersListView);
+        playersLeaderBoardFlowPane.getChildren().add(gameConsoleContainer);
 
-        titledPane.setContent(listFlowPane);
-        rootLayout.setLeft(titledPane);
-        listFlowPane.autosize();
-        listFlowPane.setVisible(true);
+        playersLeaderBoardFlowPane.setVisible(true);
+        playersLeaderBoardContainer.setContent(playersLeaderBoardFlowPane);
 
-        return playersList;
+        rootLayout.setLeft(playersLeaderBoardContainer);
+        return playersListView;
+    }
+
+    private TitledPane setUpGameConsole() {
+        TitledPane gameConsoleContainer = new TitledPane();
+        gameConsoleContainer.setText("Game Console");
+        gameConsoleContainer.setCollapsible(false);
+        gameConsoleTextArea = new TextArea();
+        gameConsoleTextArea.setMaxSize(600, 200);
+        gameConsoleTextArea.setWrapText(true);
+        gameConsoleTextArea.setEditable(false);
+        gameConsoleContainer.setContent(gameConsoleTextArea);
+        return gameConsoleContainer;
     }
 
     public void updateLeadersBoard() {
         //switch the visibility for each FlowPane
         ObservableList items = playersListView.getItems();
-
-        Character character = (Character) items.get(0);
-        items.sort((o, t1) -> {
-            if (((Character) o).getExperienceLevel() > ((Character) t1).getExperienceLevel()) {
-                return 0;
-            } else return 1;
-        });
+        /*this is a sort method that sorts the elements of a collection.
+        it uses a lambda to do its job.
+        Lambdas are new to Java, so be sure to research them.*/
+        items.sort((currentElement, nextElement) ->
+                ((Character) currentElement).compare((Character) nextElement));
     }
 
     public TitledPane getAttackerPanel() {
@@ -153,8 +197,8 @@ public class GameGUI {
         return defenderPane;
     }
 
-    public Button getResetButton() {
-        return resetGameButton;
+    public Button getNextBattleButton() {
+        return nextBattleButton;
     }
 
     public TextArea getAttackerTextArea() {
@@ -163,5 +207,13 @@ public class GameGUI {
 
     public TextArea getDefenderTextArea() {
         return defenderTextArea;
+    }
+
+    public Button getNext40BattlesButton() {
+        return next40BattlesButton;
+    }
+
+    public Button getResetGameButton() {
+        return resetGameButton;
     }
 }

@@ -1,10 +1,14 @@
 package buildingAGame.objects.characters;
 
 import buildingAGame.objects.characters.human.*;
+import buildingAGame.objects.characters.pet.Dog;
+import buildingAGame.objects.characters.pet.Lion;
 import buildingAGame.objects.characters.pet.Pet;
 import buildingAGame.utils.Utils;
+import javafx.scene.control.TextArea;
 
 import java.lang.*;
+import java.util.HashMap;
 
 /**
  * Created by lwdthe1 on 1/20/2016.
@@ -16,28 +20,48 @@ public abstract class AbstractCharacter  implements Character {
     public static final String ACTION_TRAINED = "action_blocked_attack";
     protected static final String ACTION_ARCHER_FOUND_ARROWS = "action_archer_found_arrows";
 
-    private final double MAX_HEALTH = 100.0;
-    private final int MAX_EXPERIENCE = 100000;
+    protected final static double MAX_HEALTH = 100.0;
+    private final static int MAX_EXPERIENCE = 100000;
+    private final static int BASE_ATTACK_POWER = 100;
+    private final static int BASE_DEFENSE_POWER = 200;
+    private final static HashMap<Class, Integer> maxTrainingCapability;
 
     /*
             this is a static block.
             It is executed the first time this class is accessed
             Everything in it will happen without an instance of the class
             */
-    {
-        Character.actionExperiences.put(ACTION_LANDED_ATTACK, 350);
-        Character.actionExperiences.put(ACTION_BLOCKED_ATTACK, 250);
-        Character.actionExperiences.put(ACTION_TRAINED, 150);
-        Character.actionExperiences.put(ACTION_ARCHER_FOUND_ARROWS, 25);
+    static {
+        //add all possible ways for a character to gain experience
+        //use a little math to make everything dynamic.
+        //This way, if we change MAX_EXPERIENCE, everything will adjust accordingly. That's dynamic
+        actionExperiences.put(ACTION_LANDED_ATTACK, MAX_EXPERIENCE / 285);
+        actionExperiences.put(ACTION_BLOCKED_ATTACK, MAX_EXPERIENCE / 400);
+        actionExperiences.put(ACTION_TRAINED, MAX_EXPERIENCE / 670);
+        actionExperiences.put(ACTION_ARCHER_FOUND_ARROWS, MAX_EXPERIENCE / 1000);
+    }
+
+    static {
+        maxTrainingCapability = new HashMap<Class, Integer>();
+        //add Human training capabilities
+        maxTrainingCapability.put(Archer.class, BASE_ATTACK_POWER / 30);
+        maxTrainingCapability.put(FireArcher.class, BASE_ATTACK_POWER / 25);
+        maxTrainingCapability.put(Taoist.class, BASE_ATTACK_POWER / 7);
+        maxTrainingCapability.put(Warrior.class, BASE_ATTACK_POWER / 15);
+
+        //add Pet training capabilities
+        maxTrainingCapability.put(Dog.class, BASE_ATTACK_POWER / 8);
+        maxTrainingCapability.put(Lion.class, BASE_ATTACK_POWER / 10);
     }
 
     protected String name;
     protected double health = MAX_HEALTH;
     protected int experience = 1;
     protected int experienceLevel = 1;
-    protected int attackPower = 85;
-    protected int defensePower = 300;
+    protected int attackPower = BASE_ATTACK_POWER;
+    protected int defensePower = BASE_DEFENSE_POWER;
     protected String typeDisplay;
+    private TextArea updatesArea;
 
     /**
      * Allows this character to heal itself if it is alive.
@@ -53,7 +77,7 @@ public abstract class AbstractCharacter  implements Character {
             health += additionalHealth;
             //make sure the health of this character does not go above 100.0.
             //If the health is more than 100.0, it will be changed to 100.0
-            health = Math.min(health, 100.0);
+            health = Math.min(health, MAX_HEALTH);
         }
         return health;
     }
@@ -102,17 +126,26 @@ public abstract class AbstractCharacter  implements Character {
     public boolean doDamageToHealth(int opponentAttackPower, int opponentExperienceLevel) {
         if(isAlive()) {
             if(blockAttack(opponentAttackPower)) {//try to block the attack
-                Utils.printSystemMessage(speak("Blocked attack. Health = " + health));
+                speak("Blocked attack. Health = " + health, true);
                 gainExperience(ACTION_BLOCKED_ATTACK);
+                updatesArea.setStyle("-fx-background-color: #2ecc71");
                 return false;
             } else {
                 double damageToHealth = calculateHealthToLose(opponentAttackPower, opponentExperienceLevel);
                 health -= damageToHealth;
-                speak("I've been hit. My health is now = " + health);
+
+                speak("I've been hit. My health is now = " + health, true);
+                updatesArea.setStyle("-fx-background-color: #9b59b6");
+
+                //check if this character died from being attacked
+                if(!isAlive()) {
+                    //indicate that this character has died
+                    updatesArea.setStyle("-fx-background-color: #e74c3c");
+                }
                 return true;
             }
         } else {
-            Utils.printSystemMessage(speak("Dead. Cannot be attacked."));
+            speak("Dead. Cannot be attacked.", true);
             return false;
         }
     }
@@ -177,23 +210,42 @@ public abstract class AbstractCharacter  implements Character {
 
         //check if the user's experienceLevel changed
         if(experienceLevel > currentLevel) {
-            attackPower += experienceLevel * 10;
+            //add more attack power and train maximally
+            attackPower += experienceLevel * 10 + getMaxTrainingCapability();
+            //add more defensive power
             defensePower += experienceLevel * 10;
 
             if(this instanceof Warrior) {
-                defensePower += 20;//warrior gets most defense boost
+                //give warrior an extra boost in defense for its shield
+                int randomDividend = Utils.getSharedRandomGen().nextInt(6) + 5;
+                defensePower *= 1.08 + (1/randomDividend);
             } else if (this instanceof Archer) {
-                attackPower += 10; //archer gets more attack for arrows
+                //archer gets more attack for arrows
+                int randomDividend = Utils.getSharedRandomGen().nextInt(6) + 15;
+                attackPower *= 1 + (1/randomDividend);
             } else if (this instanceof Taoist) {
-                attackPower += 20; // taoist gets most attack boost
+                // taoist gets most attack boost
+                int randomDividend = Utils.getSharedRandomGen().nextInt(6) + 10;
+                attackPower *= 1 + (1/randomDividend);
+
+                //archer also gets a little more defense
+                defensePower *= 1.05 + (1/randomDividend);
             }
-            speak("Upgraded. I'm now experienceLevel " + experienceLevel
-            + "\n\tNew attack power = " + getAttackPower()
-                    + "\n\tNew defence power = " + getDefensePower());
+            speak("Upgraded."
+                    + "\n\t\tExperience Level = " + experienceLevel
+                    + "\n\t\tNew attack power = " + getAttackPower()
+                    + "\n\t\tNew defence power = " + getDefensePower(), true);
+            afterLevelUpgrade();
+
+            if(updatesArea != null) {
+                updatesArea.setStyle("-fx-background-color: #3498db");
+            }
         }
 
         return experienceLevel;
     }
+
+    protected abstract void afterLevelUpgrade();
 
     /**
      * Should be used to make sure this character does not perform adverse methods on itself.
@@ -216,8 +268,68 @@ public abstract class AbstractCharacter  implements Character {
     }
 
     @Override
+    public void setUpdatesArea(TextArea attackerTextArea) {
+        this.updatesArea = attackerTextArea;
+        attackerTextArea.setText(toString() + "\n");
+    }
+
+    @Override
+    public void clearUpdatesArea() {
+        if(updatesArea != null) {
+            updatesArea.setText("");
+            updatesArea = null;
+        }
+    }
+
+    @Override
     public int getExperienceLevel() {
         return experienceLevel;
+    }
+
+    @Override
+    public int getMaxTrainingCapability() {
+        return maxTrainingCapability.get(this.getClass());
+    }
+
+    /**
+     * Compares this character to another character.
+     * It returns 0 if this character is greater than the other character and 1 otherwise.
+     *
+     * In some cases, a character with more experience may not mean it is stronger than others,so
+     * which is greater is determined by the following criteria:
+     * #1. which is alive
+     * #2. which has more attack
+     * #3. if tie in #3, which has more defensive power
+     * #4. if tie in #4, which has more experience
+     * @param otherCharacter
+     * @return
+     */
+    public int compare(Character otherCharacter){
+        if (isAlive() && !otherCharacter.isAlive()
+                //if the first expression was not true, this one is evaluated
+                || hasMoreAttack(otherCharacter)
+                //if the second expression was not true, this one is evaluated
+                || hasEqualAttackMoreDefense(otherCharacter)
+                //if the third expression was not true, this one is evaluated
+                || hasEqualAttackAndDefenceMoreExp(otherCharacter)
+                ) {
+            return 0;
+        } else return 1;
+    }
+
+    private boolean hasMoreAttack(Character otherCharacter) {
+        return getAttackPower() > otherCharacter.getAttackPower();
+    }
+
+    private boolean hasEqualAttackMoreDefense(Character otherCharacter) {
+        return getExperience() == otherCharacter.getExperience()
+                && getAttackPower() > otherCharacter.getAttackPower();
+    }
+
+    private boolean hasEqualAttackAndDefenceMoreExp(Character otherCharacter) {
+        return getAttackPower() == otherCharacter.getAttackPower()
+                &&  getDefensePower() == otherCharacter.getDefensePower()
+        && getExperience() > otherCharacter.getExperience();
     }
 
     /**
@@ -227,8 +339,9 @@ public abstract class AbstractCharacter  implements Character {
      * If this character is an instance of the Pet class, add the pet prefix.
      * Otherwise, add the unknown type prefix
      * @param message the message to print
+     * @param appendToUpdatesArea
      */
-    protected String speak(String message) {
+    protected String speak(String message, boolean appendToUpdatesArea) {
         String returnMessage = "";
         if(isAlive()) {
             if (this instanceof Human) {
@@ -238,7 +351,11 @@ public abstract class AbstractCharacter  implements Character {
             } else {
                 returnMessage = Utils.UNKNOWN_TYPE_MESSAGE_PREFIX + name + ": " + message;
             }
-            System.out.print(returnMessage + "\n");
+            if(appendToUpdatesArea && updatesArea != null) {
+                updatesArea.appendText(returnMessage);
+            } else {
+                System.out.print(returnMessage + "\n");
+            }
         } else {
             returnMessage = DEAD_INACTION_MESSAGE;
         }

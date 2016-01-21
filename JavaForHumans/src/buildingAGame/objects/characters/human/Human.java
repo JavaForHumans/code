@@ -1,21 +1,28 @@
 package buildingAGame.objects.characters.human;
 
 import buildingAGame.objects.characters.AbstractCharacter;
+import buildingAGame.objects.characters.pet.Dog;
+import buildingAGame.objects.characters.pet.Lion;
 import buildingAGame.objects.characters.pet.Pet;
 
 import java.lang.*;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
  * Created by lwdthe1 on 1/17/2016.
  */
 public abstract class Human extends AbstractCharacter {
+
+
     private Pet pet;
     private LinkedList<Human> friendsList = new LinkedList<>();
 
     public Human(String name) {
         this.name = name;
         typeDisplay = getClass().getSimpleName();
+        //have the human train before battle
+        train();
     }
 
     public void setPet(Pet pet) {
@@ -25,6 +32,8 @@ public abstract class Human extends AbstractCharacter {
     }
 
     public Pet getPet() {return pet;}
+
+    public boolean hasPet() { return pet != null; }
 
     public LinkedList<Human> getFriendsList() {return friendsList;}
 

@@ -7,7 +7,9 @@ import buildingAGame.objects.characters.Character;
  * Created by lwdthe1 on 1/17/2016.
  */
 public class Archer extends Human {
-    int numArrows = 0;
+    protected int numArrows = 0;
+
+    protected int maxAttackArrows = 30;
 
     public Archer(String name) {
         super(name);
@@ -16,10 +18,10 @@ public class Archer extends Human {
 
     public void findArrows() {
         if(isAlive()) {
-            int numArrowsFound = randomGenerator.nextInt(10) + 1;
-            speak("Found " + numArrowsFound + " arrows!");
+            int numArrowsFound = randomGenerator.nextInt(100) + 10;
+            speak("Found " + numArrowsFound + " arrows!", true);
             numArrows += numArrowsFound;
-            speak("I now have " + numArrows + " arrows.");
+            speak("I now have " + numArrows + " arrows.", true);
 
             gainExperience(ACTION_ARCHER_FOUND_ARROWS);
         }
@@ -29,14 +31,10 @@ public class Archer extends Human {
     public void attack(Character opponent) {
         if(!isSelf(opponent) && isAlive()) {
             if(numArrows > 0) {
-                int numArrowsToAttackWith = randomGenerator.nextInt(numArrows) + 1;
-
-                //the maximum arrows an archer can attack with at once is 10
-                //make sure the numArrowsToAttackWith does not exceed 10
-                numArrowsToAttackWith = Math.min(numArrowsToAttackWith, 10);
+                int numArrowsToAttackWith = getNumArrowsToAttackWith();
 
                 speak(" Attacking " + opponent.getName()
-                        + " with " + numArrowsToAttackWith + " arrows!");
+                        + " with " + numArrowsToAttackWith + " arrows!", true);
 
                 //subtract the number of arrows you're using for this attack
                 // from the number of arrows you have
@@ -47,14 +45,17 @@ public class Archer extends Human {
                 //try to do damage to the opponent's health
                 if(opponent.doDamageToHealth(attackPowerWithArrows, experienceLevel)){
                     //if attack was successful and damage was done to opponent's health
+                    speak("Successful Attack of " + attackPowerWithArrows, true);
                     //gain experience for it
                     gainExperience(ACTION_LANDED_ATTACK);
+                } else {
+                    speak("Failed Attack of " + attackPowerWithArrows, true);
                 }
 
                 //find more arrows to replace the arrows you just used
                 findArrows();
             } else {
-                speak("No arrows. Can't attack " + opponent.getName() + " ...");
+                speak("No arrows. Can't attack " + opponent.getName() + " ...", true);
                 //find more arrows for next attack
                 findArrows();
             }
@@ -62,16 +63,55 @@ public class Archer extends Human {
         train();
     }
 
+    protected int getNumArrowsToAttackWith() {
+        int numArrowsToAttackWith = randomGenerator.nextInt(numArrows) + 1;
+
+        //make sure the numArrowsToAttackWith does not exceed the max allowed for this archer
+        numArrowsToAttackWith = Math.min(numArrowsToAttackWith, maxAttackArrows);
+        return numArrowsToAttackWith;
+    }
+
+    /**
+     * Allows this character to try to train its attack power.
+     */
     @Override
     public void train() {
-        int trainedAmount = randomGenerator.nextInt(10);
+        //archers always train their attack power by at least one
+        int trainedAmount = randomGenerator.nextInt(getMaxTrainingCapability()) + 1;
         attackPower += trainedAmount;
         if(trainedAmount > 0) {
+            speak("Trained. Added " + trainedAmount + " attack power.", true);
             gainExperience(ACTION_TRAINED);
+        } else {
+            speak("Training failed ...", true);
         }
     }
 
     public int calculateAttackPowerWithArrows(int numArrowsToAttackWith) {
-        return getAttackPower() + numArrowsToAttackWith;
+        if(numArrowsToAttackWith == -1) {
+            numArrowsToAttackWith = Math.min(numArrows, maxAttackArrows);
+        }
+        return attackPower + numArrowsToAttackWith;
+    }
+
+    public void increaseMaxAttackArrows() {
+        maxAttackArrows += 10;
+    }
+
+    public int getMaxAttackArrows() {
+        return maxAttackArrows;
+    }
+
+    @Override
+    protected void afterLevelUpgrade() {
+        increaseMaxAttackArrows();
+        speak("New Max Arrows: " + maxAttackArrows, true);
+        //archers also get to increase their maximum attack arrows
+        findArrows();
+    }
+
+    @Override
+    public int getAttackPower(){
+        return calculateAttackPowerWithArrows(-1);
     }
 }

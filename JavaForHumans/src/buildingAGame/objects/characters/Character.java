@@ -1,5 +1,7 @@
 package buildingAGame.objects.characters;
 
+import javafx.scene.control.TextArea;
+
 import java.util.HashMap;
 import java.util.Random;
 
@@ -25,4 +27,11 @@ public interface Character {
     int getExperienceLevel();
     boolean isAlive();
     void train();
+    int getMaxTrainingCapability();
+
+    void setUpdatesArea(TextArea attackerTextArea);
+
+    void clearUpdatesArea();
+
+    int compare(Character otherCharacter);
 }
