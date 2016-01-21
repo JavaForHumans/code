@@ -13,7 +13,7 @@ public class Main {
     /**
      * The main method is where your entire program starts from.
      * The main method is public and static,
-     * so the computer does not need an instance of your Main class to run it.
+     * so the computer does not need an instance of your ConsoleGameMain class to run it.
      *
      * Your code is executed in order starting from here.
      *

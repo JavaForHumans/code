@@ -38,7 +38,7 @@ public class StudyGuide {
         System.out.println("> To quit, enter \"X\" when prompted.");
         System.out.printf("\n>Let's begin...\n%s\n", OUTPUT_SEPERATOR_LINE);
 
-        userInput = "start";
+        userInput = "startInConsole";
         while(userPoints < possiblePoints && !quit(userInput)) {
             for (String key : studyGuide.keySet()) {
                 Concept currentConcept = studyGuide.get(key);

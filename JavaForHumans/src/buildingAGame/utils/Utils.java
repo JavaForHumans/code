@@ -17,7 +17,10 @@ public class Utils {
 
     public static Random getSharedRandomGen() { return sharedRandomNumberGenerator; }
 
-    public static void printSystemMessage(String message) {
-        System.out.println(SYSTEM_MESSAGE_PREFIX + ": " + message + "\n");
+    public static String printSystemMessage(String message) {
+        String returnMessage = SYSTEM_MESSAGE_PREFIX + ": " + message + "\n";
+        System.out.println(returnMessage);
+
+        return  returnMessage;
     }
 }

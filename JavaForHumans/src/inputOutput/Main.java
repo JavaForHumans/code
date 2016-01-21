@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        String userInput = "start";
+        String userInput = "startInConsole";
         while(!userInput.equals("exit")) {
             String userName = "";
             int userAge = 0;
@@ -28,7 +28,7 @@ public class Main {
                 System.out.println("You are old enough to play our game.");
                 //play fun game here
 
-                System.out.println("Game over!");
+                System.out.println("GUIGameApplication over!");
 
                 System.out.println("Enter YES to play again or EXIT to exit.");
                 if(scanner.hasNext()) {

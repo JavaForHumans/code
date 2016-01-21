@@ -52,7 +52,7 @@ public class HelloWorld {
             lastName = scanner.nextLine();
             System.out.println("What's your favorite programming language. (Try Java)");
             favoriteProgrammingLanguage = scanner.nextLine();
-            System.out.println("What year did you start programming?");
+            System.out.println("What year did you startInConsole programming?");
             //we hope the user enters a number.
             //if they don't the application will break.
             //So we try to get the 
@@ -67,7 +67,7 @@ public class HelloWorld {
                 
                 //proceed :)
             }
-            System.out.println("which month did you start programming?");
+            System.out.println("which month did you startInConsole programming?");
             monthStartedProgramming = scanner.nextLine();
             
             //create an instance of a helloWorld.lessSimpleExample.ModernNerd with the firstName, middleName, and lastName the user provided.
