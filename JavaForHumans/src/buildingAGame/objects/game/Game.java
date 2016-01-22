@@ -278,7 +278,7 @@ public final class Game {
                     defender.setUpdatesArea(defenderTextArea);
 
                     //have the defender heal itself before being attacked
-                    int healAmount = getSharedRandom().nextInt(20) + 1;
+                    int healAmount = getSharedRandom().nextInt(10) + 50;
                     defender.healSelf(healAmount);
 
                     //have the attacker attack the defender
@@ -286,24 +286,9 @@ public final class Game {
 
                     //check if the defender died from the attack
                     if(!defender.isAlive()) {
-                        gameConsole.appendText(Utils.gameConsoleMessage(
-                                defender + " has died.\n\tRemoving from game.", false));
-                        gameConsole.setStyle("-fx-background-color: #e74c3c");
+                        checkIfDefenderDied();
 
-                        //if the defender is dead, take it out of the list of characters in the game
-                        allCharacters.remove(defender);
-                        //update the local value of how many characters are left in the game
-                        numCharactersLeftInGame--;
-
-                        if(numCharactersLeftInGame < 2 && numCharactersLeftInGame > 0) {
-                            //if there are no more characters left in the game,
-                            //break out of the for loop to end the game
-
-                            gameConsole.appendText(Utils.gameConsoleMessage(
-                                    "Game Over!\n\t" + allCharacters.get(0)
-                                            + " is last player standing ...", false));
-                            doAfterBattle();
-                            finishGame();
+                        if (onlyOneCharacterLeft()) {
                             return false;
                         }
                     }
@@ -318,6 +303,43 @@ public final class Game {
             finishGame();
             return false;
         }
+    }
+
+    /**
+     * Checks whether or not there's only one character left alive in the game.
+     * If there is only one character left alive, the game is ended.
+     * @return true if there's only one character left
+     */
+    private boolean onlyOneCharacterLeft() {
+        if(numCharactersLeftInGame < 2 && numCharactersLeftInGame > 0) {
+            //if there are no more characters left in the game,
+            //break out of the for loop to end the game
+
+            gameConsole.appendText(Utils.gameConsoleMessage(
+                    "Game Over!\n\t" + allCharacters.get(0)
+                            + " is last player standing ...", false));
+            doAfterBattle();
+            finishGame();
+            return true;
+        }
+        return false;
+    }
+
+    private void checkIfDefenderDied() {
+        gameConsole.appendText(Utils.gameConsoleMessage(
+                defender + " has died.\n\tRemoving from game.", false));
+        gameConsole.setStyle("-fx-background-color: #e74c3c");
+
+        //if the defender is dead, take it out of the list of characters in the game
+        allCharacters.remove(defender);
+
+                        /* You could also remove the dead character from the game's gui players ListView
+                         by doing the following: However, the user may want to see all of the characters at all times
+                        gameGUI.getPlayersListView().getItems().remove(defender);
+                         */
+
+        //update the local value of how many characters are left in the game
+        numCharactersLeftInGame--;
     }
 
     /**

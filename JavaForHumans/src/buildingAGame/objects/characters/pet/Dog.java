@@ -5,7 +5,12 @@ import buildingAGame.objects.characters.Character;
 import buildingAGame.objects.characters.human.Human;
 
 /**
- * Created by lwdthe1 on 1/18/2016.
+ * Created by Lincoln W Daniel, the ModernNerd, on 1/17/2016
+ * as an application of the concepts expressed in the "Java for Humans" book.
+ *
+ * This class creates a template for Dog objects.
+ * The Dog is a subclass of Pet.class.
+ * It will be used by the Game class to populate characters in a game.
  */
 public class Dog extends Pet implements buildingAGame.objects.characters.Character {
 

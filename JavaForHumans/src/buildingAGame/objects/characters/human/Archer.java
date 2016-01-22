@@ -10,6 +10,7 @@ import buildingAGame.objects.characters.Character;
  * This class creates a template for Archer objects.
  * It will be used by the Game class to populate characters in a game.
  *
+ * This is a subclass of Human.class
  */
 public class Archer extends Human {
     //the number of arrows this archer has at any given time

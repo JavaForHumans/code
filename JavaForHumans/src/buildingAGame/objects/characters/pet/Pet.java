@@ -6,7 +6,11 @@ import buildingAGame.objects.characters.human.Human;
 import java.util.HashMap;
 
 /**
- * Created by lwdthe1 on 1/17/2016.
+ * Created by Lincoln W Daniel, the ModernNerd, on 1/17/2016
+ * as an application of the concepts expressed in the "Java for Humans" book.
+ *
+ * This class creates a template for Pet objects.
+ * It will be used by the Game class to populate characters in a game.
  */
 public abstract class Pet extends AbstractCharacter implements buildingAGame.objects.characters.Character {
     protected Human owner;

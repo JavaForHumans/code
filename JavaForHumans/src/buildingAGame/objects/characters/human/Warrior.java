@@ -9,6 +9,7 @@ import buildingAGame.objects.characters.Character;
  * This class creates a template for Warrior objects.
  * It will be used by the Game class to populate characters in a game.
  *
+ * This is a subclass of Human.class
  */
 public class Warrior extends Human {
 

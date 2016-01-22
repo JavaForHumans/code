@@ -9,6 +9,7 @@ import buildingAGame.objects.characters.Character;
  * This class creates a template for Taoist objects.
  * It will be used by the Game class to populate characters in a game.
  *
+ * This is a subclass of Human.class
  */
 public class Taoist extends Human {
     public Taoist(String name) {
@@ -52,6 +53,6 @@ public class Taoist extends Human {
     @Override
     protected void afterLevelUpgrade() {
         //taoist also get to heal itself when it levels
-        healSelf(Math.min(health * .5,MAX_HEALTH / 3));
+        healSelf(Math.min(health * .5,MAX_HEALTH / 5));
     }
 }
