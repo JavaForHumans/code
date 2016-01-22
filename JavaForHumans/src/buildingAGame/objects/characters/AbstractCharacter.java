@@ -11,7 +11,13 @@ import java.lang.*;
 import java.util.HashMap;
 
 /**
- * Created by lwdthe1 on 1/20/2016.
+ * Created by Lincoln W Daniel, the ModernNerd, on 1/17/2016
+ * as an application of the concepts expressed in the "Java for Humans" book.
+ *
+ * This class implements much of the Character interface
+ * and must be extended by any class that intends to create a template for a Character object.
+ * All implementing classes must include the below public methods and have access to the final static fields
+ *
  */
 public abstract class AbstractCharacter  implements Character {
     private final String DEAD_INACTION_MESSAGE = "Dead. Cannot perform that action.";
@@ -27,10 +33,10 @@ public abstract class AbstractCharacter  implements Character {
     private final static HashMap<Class, Integer> maxTrainingCapability;
 
     /*
-            this is a static block.
-            It is executed the first time this class is accessed
-            Everything in it will happen without an instance of the class
-            */
+    this is a static block.
+    It is executed the first time this class is accessed
+    Everything in it will happen without an instance of the class
+    */
     static {
         //add all possible ways for a character to gain experience
         //use a little math to make everything dynamic.
@@ -60,7 +66,6 @@ public abstract class AbstractCharacter  implements Character {
     protected int experienceLevel = 1;
     protected int attackPower = BASE_ATTACK_POWER;
     protected int defensePower = BASE_DEFENSE_POWER;
-    protected String typeDisplay;
     private TextArea updatesArea;
 
     /**
@@ -101,6 +106,11 @@ public abstract class AbstractCharacter  implements Character {
     @Override
     public int getDefensePower() {
         return defensePower;
+    }
+
+    @Override
+    public String getTypeDisplay() {
+        return getClass().getSimpleName();
     }
 
     /**

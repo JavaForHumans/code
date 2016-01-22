@@ -10,7 +10,12 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
- * Created by lwdthe1 on 1/17/2016.
+ * Created by Lincoln W Daniel, the ModernNerd, on 1/17/2016
+ * as an application of the concepts expressed in the "Java for Humans" book.
+ *
+ * This class creates a template for Human objects.
+ * It will be used by the Game class to populate characters in a game.
+ *
  */
 public abstract class Human extends AbstractCharacter {
 
@@ -20,7 +25,6 @@ public abstract class Human extends AbstractCharacter {
 
     public Human(String name) {
         this.name = name;
-        typeDisplay = getClass().getSimpleName();
         //have the human train before battle
         train();
     }
@@ -42,11 +46,11 @@ public abstract class Human extends AbstractCharacter {
         if(getPet() == null) {
             return String.format("%s: %s | Level %d "
                             + "\n\t| Attack Power: %d | Defense Power: %d | Health: %s",
-                    name, typeDisplay, experienceLevel, attackPower, defensePower, health);
+                    name, getTypeDisplay(), experienceLevel, attackPower, defensePower, health);
         } else {
             return String.format("%s: %s | Level %d | Pet: %s "
                             + "\n\t| Attack Power: %d | Defense Power: %d | Health: %s",
-                    name, typeDisplay, experienceLevel, getPet().getName(), attackPower, defensePower, health);
+                    name, getTypeDisplay(), experienceLevel, getPet().getName(), getAttackPower(), getDefensePower(), health);
         }
     }
 }

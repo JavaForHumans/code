@@ -6,14 +6,18 @@ import java.util.HashMap;
 import java.util.Random;
 
 /**
- * Created by lwdthe1 on 1/17/2016.
+ * Created by Lincoln W Daniel, the ModernNerd, on 1/17/2016
+ * as an application of the concepts expressed in the "Java for Humans" book.
+ *
+ * This file creates an interface for any character in the game.
+ * All implementing classes must include the below public methods and have access to the final static fields
+ *
  */
 public interface Character {
     HashMap<String, Integer> actionExperiences = new HashMap<String, Integer>();
-
-    String getName();
     Random randomGenerator = new Random();
 
+    String getName();
     double getHealth();
     int getExperience();
 
@@ -34,4 +38,6 @@ public interface Character {
     void clearUpdatesArea();
 
     int compare(Character otherCharacter);
+
+    String getTypeDisplay();
 }

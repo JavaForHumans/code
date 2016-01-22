@@ -15,7 +15,6 @@ public abstract class Pet extends AbstractCharacter implements buildingAGame.obj
         this.name = name;
         this.owner = owner;
         this.owner.setPet(this);
-        typeDisplay = getClass().getSimpleName();
         //have the pet train for battle
         train();
     }
@@ -34,7 +33,7 @@ public abstract class Pet extends AbstractCharacter implements buildingAGame.obj
     public String toString(){
         return String.format("%s: %s | Level %d | Owner: %s "
                 + "\n\t| Attack Power: %d | Defense Power: %d | Health: %s",
-                name, typeDisplay, experienceLevel, getOwner().getName(), attackPower, defensePower, health);
+                name, getTypeDisplay(), experienceLevel, getOwner().getName(), getAttackPower(), getDefensePower(), health);
     }
 
     @Override

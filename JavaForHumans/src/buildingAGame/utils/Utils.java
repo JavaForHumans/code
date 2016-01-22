@@ -3,9 +3,15 @@ package buildingAGame.utils;
 import java.util.Random;
 
 /**
- * Created by lwdthe1 on 1/20/2016.
+ * Created by Lincoln W Daniel, the ModernNerd, on 1/17/2016
+ * as an application of the concepts expressed in the "Java for Humans" book.
+ *
+ * This class is a simple utility class to facilitate a few functions of our game.
+ *
+ * The "final" keyword in the case of classes means that it cannot be extended by another class.
+ *
  */
-public class Utils {
+public final class Utils {
     private static final String SYSTEM_MESSAGE_PREFIX = "\n\t#> ";
     public static final String HUMAN_MESSAGE_PREFIX = "\n\tH> ";
     public static final String PET_MESSAGE_PREFIX = "\n\tP> ";

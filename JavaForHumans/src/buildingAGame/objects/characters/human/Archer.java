@@ -4,11 +4,17 @@ import buildingAGame.objects.characters.Character;
 
 
 /**
- * Created by lwdthe1 on 1/17/2016.
+ * Created by Lincoln W Daniel, the ModernNerd, on 1/17/2016
+ * as an application of the concepts expressed in the "Java for Humans" book.
+ *
+ * This class creates a template for Archer objects.
+ * It will be used by the Game class to populate characters in a game.
+ *
  */
 public class Archer extends Human {
+    //the number of arrows this archer has at any given time
     protected int numArrows = 0;
-
+    //this is the maximum amount of arrows this archer can attack with.
     protected int maxAttackArrows = 30;
 
     public Archer(String name) {
