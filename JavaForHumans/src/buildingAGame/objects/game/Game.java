@@ -265,10 +265,11 @@ public final class Game {
                 defender = allCharacters.get(randomDefenderIndex);
 
                 attackerPanel.setText("Attacker: \t\t" + attacker.getName()
-                        + "\t\tL" + attacker.getTypeDisplay()
+                        + "\t\t" + attacker.getTypeDisplay()
                         + "\t\tL" + attacker.getExperienceLevel()
                         + "\t" + attacker.getExperience() + "xp");
                 defenderPanel.setText("Defender \t\t" + defender.getName()
+                        + "\t\t" + attacker.getTypeDisplay()
                         + "\t\tL" + defender.getExperienceLevel()
                         + "\t" + defender.getExperience() + "xp");
 
@@ -420,6 +421,7 @@ public final class Game {
         //show and add the survivors/winner to the historyOfWinners array
         if(numCharactersLeftInGame == 1) { showWinnerAndAddToHistory(); }
         else { showSurvivorsAndAddToHistory(); }
+        gameConsole.appendText("\n");
         newGameButton.setDisable(false);
     }
 

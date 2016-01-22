@@ -135,13 +135,17 @@ public class GameGUI {
         //set up the views to put in the bottom position of our root layout
         TitledPane bottomPane = setupBottomPane();
 
+        //make the panes auto size
+        rightPane.autosize();
+        leftPane.autosize();
+        bottomPane.autosize();
         //put the right, left, and bottom, panes into place in the root layout
         rootLayout.setRight(rightPane);
         rootLayout.setLeft(leftPane);
         rootLayout.setBottom(bottomPane);
 
         //Add the our root layout to the scene
-        Scene appScene = new Scene(rootLayout, 1400, 900);
+        Scene appScene = new Scene(rootLayout, 1400, 650);
 
         //Add the Scene to the Stage
         game.getPrimaryStage().setScene(appScene);
@@ -327,6 +331,8 @@ public class GameGUI {
         as they battle one another*/
         playersListView = new ListView(FXCollections.observableArrayList(game.getPlayers()));
         playersListView.setMinWidth(600);
+        playersListView.setMaxHeight(300);
+        playersListView.autosize();
 
         TitledPane gameConsoleContainer = setupGameConsole();
 
@@ -348,11 +354,12 @@ public class GameGUI {
         gameConsoleContainer.setText("Game Console");
         gameConsoleContainer.setCollapsible(false);
         gameConsoleTextArea = new TextArea();
-        gameConsoleTextArea.setMaxSize(600, 200);
+        gameConsoleTextArea.setMaxHeight(150);
         gameConsoleTextArea.setWrapText(true);
         gameConsoleTextArea.setEditable(false);
         gameConsoleTextArea.autosize();
         gameConsoleContainer.setContent(gameConsoleTextArea);
+        gameConsoleContainer.autosize();
         return gameConsoleContainer;
     }
 
