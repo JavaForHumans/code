@@ -12,6 +12,7 @@ public interface Character {
     double getHealth();
     long getExperience();
 
+    String speak();
     void defend();
     void attack(Character opponent);
     void jump();

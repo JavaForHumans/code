@@ -18,15 +18,17 @@ import java.util.LinkedList;
  *
  */
 public abstract class Human extends AbstractCharacter {
-
-
     private Pet pet;
-    private LinkedList<Human> friendsList = new LinkedList<>();
+    final private LinkedList<Human> friendsList = new LinkedList<>();
 
     public Human(String name) {
         this.name = name;
         //have the human train before battle
         train();
+    }
+
+    public void addFriend(Human newFriend) {
+        friendsList.add(newFriend);
     }
 
     public void setPet(Pet pet) {

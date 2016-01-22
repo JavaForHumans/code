@@ -21,6 +21,7 @@ public interface Character {
     double getHealth();
     int getExperience();
 
+    String speak(String message, boolean appendToUpdatesArea);
     double healSelf(double additionalHealth);
     void attack(Character opponent);
     int getAttackPower();

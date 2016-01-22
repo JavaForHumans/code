@@ -13,9 +13,6 @@ import buildingAGame.objects.characters.human.Human;
  * It will be used by the Game class to populate characters in a game.
  */
 public class Dog extends Pet implements buildingAGame.objects.characters.Character {
-
-    private int maxTrainingCapability;
-
     public Dog(String name, Human owner) {
         super(name, owner);
         bark();

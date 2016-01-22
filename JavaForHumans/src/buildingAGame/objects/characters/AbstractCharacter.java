@@ -351,7 +351,8 @@ public abstract class AbstractCharacter  implements Character {
      * @param message the message to print
      * @param appendToUpdatesArea
      */
-    protected String speak(String message, boolean appendToUpdatesArea) {
+    @Override
+    public String speak(String message, boolean appendToUpdatesArea) {
         String returnMessage = "";
         if(isAlive()) {
             if (this instanceof Human) {
@@ -371,4 +372,7 @@ public abstract class AbstractCharacter  implements Character {
         }
         return returnMessage;
     }
+
+    @Override
+    public abstract String toString();
 }
