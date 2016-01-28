@@ -18,7 +18,9 @@ Motivation: What You Can do With Java
 If you need more motivation to learn Java, read the Conclusion chapter to learn more about what you can do with Java, how much you stand to gain from being a Java programmer, and how Java for Humans can get you started on the path to a promising career in Java software development.
 
 What You Need Before Reading
-This book will make use of Java 8, version 1.8.0_51, and you need a program to run the supporting code/programs. To learn Java, you will need to do a good deal of Googling, so let’s start now. Search Google or Youtube for how to install and use the NetBeans IDE along with Java 1.8 from Oracle. I would explain how to do it, but my explanation may not work for everyone because there are many different operating systems the readers of this book may be using. A great starting point is to visit the official website for Java resources: you can download both NetBeans and the most recent Java version from this link.
+This book will make use of Java 8, version 1.8.0_51, and you need a program to run the supporting code/programs. To learn Java, you will need to do a good deal of Googling, so let’s start now. Search Google or Youtube for how to install and use the NetBeans IDE along with Java 1.8 from Oracle. I would explain how to do it, but my explanation may not work for everyone because there are many different operating systems the readers of this book may be using. 
+
+A great starting point is to visit the official website for Java resources: you can download both NetBeans and the most recent Java version from this link -> http://www.oracle.com/technetwork/articles/javase/jdk-netbeans-jsp-142931.html
 
 Integrated Development Environment (IDE)
 Going forward, I will be using NetBeans to deploy code as this is the easiest integrated development environment (IDE) for beginners. Feel free to leave any comments of NetbBeans issues and I’ll do my best to get back to you.
