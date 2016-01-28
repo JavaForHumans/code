@@ -1,4 +1,9 @@
 # java-for-humans
+Read the book at http://www.JavaForHumans.com
+
+Why Read this Book
+I am writing this book to teach anybody with the slightest bit of interest in computer science, software engineering, and programming/coding how to begin by learning Java, the most widely used and deployed programming language today. However, Java for Humans won’t be like other coding books. My intention is to relate coding to human experiences to make it easier for beginners to learn and have a connection with Java.
+
 Supporting Source Code
 A great way to read this book is to also have the supporting source code for each chapter opened in your IDE. There will be increasingly large amounts of code in the remaining chapters of this book, but much of it will be omitted from the text to keep the chapters short. If a chapter appears long, it is likely that a considerable amount of it is code, not plain text, so hang in there.
 Each chapter’s supporting source code can be found in its own namesake package under the source (src) folder. From the root folder, navigate to “src” and then choose the chapter you want to view.
