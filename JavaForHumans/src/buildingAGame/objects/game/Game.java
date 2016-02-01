@@ -167,6 +167,7 @@ public final class Game {
             newGameButton = gameGUI.getNewGameButton();
 
             //let the user start a new game
+            gameConsole.appendText(Utils.gameConsoleMessage("Make sure this window is in full screen mode.", false));
             gameConsole.appendText(Utils.gameConsoleMessage("Enter max number of battles "
                     + "and push \"Start New Game\" below ...", false));
             newGameButton.setDisable(false);
