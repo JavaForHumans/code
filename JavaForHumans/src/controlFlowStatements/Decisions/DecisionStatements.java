@@ -10,54 +10,39 @@ public class DecisionStatements {
         /*******If-Then Statements*********/
         System.out.println("/*******If-Then Statements*********/");
 
-        //make an instance of a person for yourself.
-        Person you = new Person("you");
+        Player player1 = new Player("Lucy");
+        Player player2 = new Player("Sam");
+        //the first player rolls the dice
+        int movePositions = player1.rollDice();
 
-        /*make it true that you are happy
-        and you know it*/
-        //change this value to see how it affects the decision below
-        you.areHappyAndYouKnowIt = true;
+        //player moves piece on game's board
+        player1.moveForward(movePositions);
 
-        System.out.println("Is " + you.name + " happy?: " + you.areHappyAndYouKnowIt);
-        /*Make a decision: check check if its true that
-        you are happy and you know it*/
-        if(you.areHappyAndYouKnowIt){
-            //it is true
-            //so call a method to clap your hand
-            you.clapYourHands();
+        if(player1.passedGo()) {
+            player1.collect200Dollars();
         }
 
-        //sit down in your seat.
-        you.sitDown();
+        //next player rolls dice
+        movePositions = player2.rollDice();
+        player2.moveForward(movePositions);
+
+        //...
+        //Add more code here to continue the game
 
 
         /*******If-Then-Else Statements*********/
         /*******If-Then-Else Statements*********/
         /*******If-Then-Else Statements*********/
         System.out.println("\n/*******If-Then-Else Statements*********/");
-
-        /*make it true that you are happy
-        and you know it*/
-        //change this value to see how it affects the decision below
-        you.areHappyAndYouKnowIt = false;
-
-        System.out.println("Is " + you.name + " happy?: " + you.areHappyAndYouKnowIt);
-        /*Make a decision: check check if its true that
-        you are happy and you know it*/
-        if(you.areHappyAndYouKnowIt){
-            //Block A: it is true
-
-            //so call a method to clap your hand
-            you.clapYourHands();
-            you.continueStanding();
+        boolean itWillRain = true;
+        if (itWillRain) {
+            //pack the umbrella for the trip
+            System.out.println("Adding our umbrella in the bag.");
         } else {
-            //Block B: it is false
-
-            /*don't clap, just sit down*/
-            you.sitDown();
-            //meditate until you are happy
-            you.meditate();
+            //put the umbrella back in the closet
+            System.out.println("Putting umbrella back in the closet.");
         }
+
 
 
         /*******Nested if Statements*********/
