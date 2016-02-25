@@ -34,43 +34,46 @@ public class Main {
         int numCookiesEaten = 0;
         int cookiesNeededToBeFull = 10;
         int numCookiesLeftInCookieJar = 8;
-
+        
         Random randomCookiesGenerator = new Random();
         int numCookiesToEatThisTime;
-
+        
         int numCompletedIterations = 0;
         while(numCookiesEaten < cookiesNeededToBeFull) {
             numCookiesToEatThisTime = randomCookiesGenerator.nextInt(numCookiesLeftInCookieJar) + 1;
-            
+        
             //make sure we aren't trying to eat more cookies than exists in the cookie jar
             if(numCookiesToEatThisTime > numCookiesLeftInCookieJar) {
                 numCookiesToEatThisTime = numCookiesLeftInCookieJar;
             }
-
+        
             System.out.println("< Eating " + numCookiesToEatThisTime + " cookies this time.");
-
+        
             numCookiesEaten += numCookiesToEatThisTime;
             numCookiesLeftInCookieJar -= numCookiesToEatThisTime;
-
+        
             if(numCookiesLeftInCookieJar < 1) {
-                System.out.println("#No cookies left to eat :(");
+                System.out.println("\n#No cookies left to eat :(");
                 break;
             } else {
                 System.out.println("> " + numCookiesLeftInCookieJar + " cookies left in jar");
             }
-
+        
             //increment number of times we've looped
             numCompletedIterations++;
         }
-
-        System.out.println("Completed " + numCompletedIterations + " iterations completed.");
         /*Prints:
-            < Eating 7 cookies this time.
-            > 1 cookies left in jar
-            < Eating 1 cookies this time.
-            #No cookies left to eat after
-            Completed 1 iterations completed.
+            < Eating 4 cookies this time.
+            > 4 cookies left in jar
+            < Eating 2 cookies this time.
+            > 2 cookies left in jar
+            < Eating 2 cookies this time.
+            
+            #No cookies left to eat :(
          */
+        
+        System.out.println("Completed " + numCompletedIterations + " iterations completed.");
+        //Completed 1 iterations completed.
 
     }
 }
