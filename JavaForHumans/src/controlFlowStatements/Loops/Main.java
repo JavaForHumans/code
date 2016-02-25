@@ -41,6 +41,11 @@ public class Main {
         int numCompletedIterations = 0;
         while(numCookiesEaten < cookiesNeededToBeFull) {
             numCookiesToEatThisTime = randomCookiesGenerator.nextInt(numCookiesLeftInCookieJar) + 1;
+            
+            //make sure we aren't trying to eat more cookies than exists in the cookie jar
+            if(numCookiesToEatThisTime > numCookiesLeftInCookieJar) {
+                numCookiesToEatThisTime = numCookiesLeftInCookieJar;
+            }
 
             System.out.println("< Eating " + numCookiesToEatThisTime + " cookies this time.");
 
