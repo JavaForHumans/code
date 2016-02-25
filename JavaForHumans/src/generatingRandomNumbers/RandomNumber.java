@@ -34,10 +34,10 @@ public class RandomNumber {
 
         int randomIntWithBound = randomNumberGenerator.nextInt(10);
 
-        if(randomIntWithBound >= 0 || randomIntWithBound < 5) {
+        if(randomIntWithBound >= 0 && randomIntWithBound < 5) {
             //random int is between 0 (inclusive) and 5 (exclusive)
             System.out.println("Random int = " + randomIntWithBound + ". Going Out!");
-        } else if(randomIntWithBound >= 5 || randomIntWithBound < 10){
+        } else if(randomIntWithBound >= 5 && randomIntWithBound < 10){
             //random int is between 5 (inclusive) and 10 (exclusive)
             System.out.println("Random int = " + randomIntWithBound + ". Staying in!");
         }
