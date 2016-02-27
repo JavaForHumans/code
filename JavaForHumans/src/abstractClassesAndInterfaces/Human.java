@@ -38,6 +38,10 @@ public abstract class Human implements Character{
         return experience;
     }
 
+    public void setAttackPower(int attackPower) {
+        this.attackPower = attackPower;
+    }
+
     public int getAttackPower() {
         return attackPower;
     }
