@@ -60,4 +60,8 @@ public abstract class Pet implements Character{
     public int getAttackPower() {
         return attackPower;
     }
+    
+    public void setAttackPower(int attackPower) {
+        this.attackPower = attackPower;
+    }
 }
