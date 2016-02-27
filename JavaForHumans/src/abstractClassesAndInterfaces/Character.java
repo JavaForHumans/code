@@ -6,17 +6,19 @@ import java.util.Random;
  * Created by lwdthe1 on 1/17/2016.
  */
 public interface Character {
-    String getName();
     Random randomGenerator = new Random();
 
+    String getName();
     double getHealth();
     long getExperience();
+    int getAttackPower();
+    void setAttackPower(int attackPower);
 
     void defend();
-    void attack(Character opponent);
     void jump();
     int heal();
-    int getAttackPower();
+    void attack(Character opponent);
     double decreaseHealth(int opponentAttackPower);
     long gainExperience(long experience);
 }
+
