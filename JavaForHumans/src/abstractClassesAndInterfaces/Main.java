@@ -10,12 +10,12 @@ public class Main {
         modernArcher.attack(niceArcher);
         niceArcher.getPet().attack(modernArcher);
         modernArcher.attack(niceArcher.getPet());
-        modernDog.attack(niceArcher);
-        petDog.attack(modernArcher);
+        modernDog.attack(petDog.getOwner());
+        petDog.attack(modernArcher.getPet());
     }
     /*Prints:
-        Tom: Found 2 arrows ...
-        Stacy: Found 6 arrows ...
+        Tom: Found 6 arrows ...
+        Stacy: Found 4 arrows ...
         Stacy: I have a new pet. Hi Hunter!
         Hunter: Wolf Wolf!
         Tom: I have a new pet. Hi Buddy!
@@ -32,7 +32,8 @@ public class Main {
         Buddy: Health now = 90.0
         Hunter: Biting Tom
         Tom: I've been hit. My health now = 89.0
-        Buddy: Biting Stacy
-        Stacy: I've been hit. My health now = 98.0
+        Buddy: Biting Hunter
+        Hunter: Wolf Wolf!
+        Hunter: Health now = 99.0
      */
 }
