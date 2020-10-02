@@ -1,4 +1,4 @@
-# java-for-humans
+# JAVA FOR HUMAN-A STEP TO THE WORLD OF PROGRAMMING
 ###### Read the book at http://www.JavaForHumans.com
 
 # Why Read this Book
